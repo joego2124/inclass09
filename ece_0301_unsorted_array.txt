@@ -1,12 +1,9 @@
-ECE 0301 - Sorting Arrays
-Unsorted Array:
+LENGTH = 8
+-11
+-2
+6
+6
+8
+-1
 0
-0
-0
-0
-0
-0
-0
-0
-0
-0
+1
