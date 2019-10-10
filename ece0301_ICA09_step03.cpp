@@ -51,13 +51,13 @@ class SortableArray {
         }
 
         //merge two sub arrays from one array to another
-        void merge(double *donorPtr, double *receiverPtr, unsigned int secondStartIndex, unsigned int length) {
+        void merge(double *donorPtr, double *receiverPtr, unsigned int secondStartIndex) {
             //ini pointers
             double *blackPtr = donorPtr;
             double *greenPtr = receiverPtr;
             double *redPtr = blackPtr + secondStartIndex;
             double *greyPtr = redPtr;
-            double *bluePtr = donorPtr + length; //length is necessary to get the end of the first array
+            double *bluePtr = donorPtr + len; //length is necessary to get the end of the first array
 
             //first comparison loop in ascending order
             while (blackPtr < redPtr && greyPtr < bluePtr) {

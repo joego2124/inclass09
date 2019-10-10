@@ -86,11 +86,18 @@ class SortableArray {
                 }
             }
         }
+
+        void split(double *prePtr, double *postPtr, unsigned int startIndex, unsigned int endIndex) {
+            int midIndex = (startIndex + endIndex) / 2;
+            merge(prePtr, postPtr, midIndex, startIndex, endIndex);
+        }
 };
 
 SortableArray readArray(ifstream&);
 
 int main() {
+
+    SortableArray arr; //create first array
 
     //create input and output files
     ofstream outFile;
@@ -103,7 +110,7 @@ int main() {
     outFile << "ECE 0301 - Sorting Arrays" << endl;
 
     //read subarray data to first array
-    SortableArray arr = readArray(inFile);
+    arr = readArray(inFile);
     arr.write(outFile, false);
 
     //ini second array that gets copied to
@@ -111,7 +118,7 @@ int main() {
     arr2.zeros();
 
     //call merge with proper parameters
-    arr.merge(arr.getPointer(), arr2.getPointer(), 5, 2, 8);
+    arr.split(arr.getPointer(), arr2.getPointer(), 4, 2, 9);
 
     //write out merged array to file
     arr2.write(outFile, true);
