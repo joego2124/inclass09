@@ -52,6 +52,7 @@ class SortableArray {
 
         //merge two sub arrays from one array to another
         void merge(double *donorPtr, double *receiverPtr, unsigned int secondStartIndex, unsigned int start, unsigned int end) {
+
             //ini pointers
             double *blackPtr = donorPtr + start;
             double *greenPtr = receiverPtr + start;
@@ -87,10 +88,34 @@ class SortableArray {
             }
         }
 
-        //splits the array and merges them while sorting
+        //recursively splits and merges array
         void split(double *prePtr, double *postPtr, unsigned int startIndex, unsigned int endIndex) {
-            int midIndex = (startIndex + endIndex) / 2;
-            merge(prePtr, postPtr, midIndex, startIndex, endIndex);
+
+            cout << startIndex << ", " << endIndex << endl;
+
+            if (endIndex - startIndex == 1) {
+                return;
+            } else {
+                int midIndex = (startIndex + endIndex) / 2;
+
+                split(postPtr, prePtr, startIndex, midIndex);
+                split(postPtr, prePtr, midIndex, endIndex);
+
+                merge(prePtr, postPtr, midIndex, startIndex, endIndex);
+            }
+        }
+
+        //full implementation of merge sort
+        void mergeSort() {
+            double *callingPtr = getPointer();
+            SortableArray workingArr(getLength());
+            double *workingArrPtr = workingArr.getPointer();
+
+            for (int i = 0; i < getLength(); i++) {
+                *(workingArrPtr + i) = *(callingPtr + i);
+            }
+
+            split(workingArrPtr, callingPtr, 0, getLength());
         }
 };
 
@@ -114,15 +139,9 @@ int main() {
     arr = readArray(inFile);
     arr.write(outFile, false);
 
-    //ini second array that gets copied to
-    SortableArray arr2(arr.getLength());
-    arr2.zeros();
-
     //call merge with proper parameters
-    arr.split(arr.getPointer(), arr2.getPointer(), 0, arr.getLength());
-
-    //write out merged array to file
-    arr2.write(outFile, true);
+    arr.mergeSort();
+    arr.write(outFile, true);
 
     //close files
     outFile.close();
