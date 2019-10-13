@@ -2,6 +2,8 @@
 #include <fstream>
 #include <string>
 #include <cstdlib>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -65,7 +67,7 @@ class SortableArray {
                 merge(prePtr, postPtr, midIndex, startIndex, endIndex);
             }
         }
-        
+
     public:
         //default constructor
         SortableArray() {
@@ -98,6 +100,15 @@ class SortableArray {
             }
         }
 
+        //generate random double for each value in array between max and min
+        void random(double min, double max) {
+            srand(static_cast<long int>(time(NULL)));
+            for (int i = 0; i < len; i++) {
+                double r = 2 * (static_cast<double>(rand()) / RAND_MAX) - 1;
+                *(arr + i) = r * max;
+            }
+        }
+
         //writes out array to a file
         void write(ofstream &f, bool sorted) {
             f << (sorted ? "Sorted Array:" : "Unsorted Array:") << endl;
@@ -124,20 +135,15 @@ SortableArray readArray(ifstream&);
 
 int main() {
 
-    SortableArray arr; //create first array
+    SortableArray arr(256); //create first array
+    arr.random(-1, 1);
 
-    //create input and output files
+    //create output file
     ofstream outFile;
     outFile.open("ece0301_merge_sort_results.txt");
 
-    ifstream inFile;
-    inFile.open("ece_0301_unsorted_array.txt");
-
     //write out first header
     outFile << "ECE 0301 - Sorting Arrays" << endl;
-
-    //read subarray data to first array
-    arr = readArray(inFile);
     arr.write(outFile, false);
 
     //call merge with proper parameters
@@ -146,7 +152,6 @@ int main() {
 
     //close files
     outFile.close();
-    inFile.close();
 
     return 0;
 }
